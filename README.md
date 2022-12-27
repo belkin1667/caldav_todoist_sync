@@ -11,7 +11,7 @@
 ## Please, note! 
 - Maybe someday I'll pack this script as Todoist extension, but not today
 - Do not change tasks created by script as script uses some textual marks in description and labels to identify tasks
-- Script will recreate completed/deleted task (Todoist API I used does not support fetching completed tasks, unfortunately), so just wait for like 1.5 hours (you can change this) after calendar event start time and task will disappear itself
+- Script will recreate completed/deleted task (Todoist API I used does not support fetching completed tasks, unfortunately), so just wait for like 30 minutes (you can change this) after calendar event start time and task will disappear itself
 
 ## Contact Author:
 Telegram: [@belkinmike](belkinmike.t.me)

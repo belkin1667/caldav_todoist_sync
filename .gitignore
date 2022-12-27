@@ -1,2 +1,4 @@
 .idea
 credentials.py
+playground.py
+__pycache__/*
