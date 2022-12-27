@@ -1,26 +1,23 @@
 import schedule
+import time
 from datetime import datetime, timedelta, timezone
 
 import caldav
 from todoist_api_python.api import TodoistAPI
 from todoist_api_python.models import Task as TodoistTask
 
-caldav_url =
-calendar_name =
-username =
-password =
-caldavapi = caldav.DAVClient(url=caldav_url, username=username, password=password)
+from credentials import *
 
-todoist_token =
-meetings_project_id =
-import_label = 'calendar_import'
+caldavapi = caldav.DAVClient(url=caldav_url, username=username, password=password)
 todoist = TodoistAPI(todoist_token)
 
 lookbehind_minutes = 90
 lookahead_days = 14
+
 caldav_task_id_mark = "CalDEV identifier: "
 last_updated_task_description_template = '* Last Updated: '
 monitoring_task_mark = 'Monitoring'
+import_label = 'calendar_import'
 
 
 class MyEvent:
@@ -92,6 +89,7 @@ def create_or_update_task_from_event(event: MyEvent, tasks_map: dict):
     if task is None:
         print('Task not found for event! Creating new task')
         save_event_as_task(event)  # not found existing task - creating new
+        print('Task created!')
     else:
         print('Task found for event!', task, 'Updating task..')
         update_task_from_event(task, event)  # found existing task - updating it
@@ -163,9 +161,12 @@ def fetch_and_save_events():
     )
     print(len(events_fetched), ' events found!')
     events_map = {}
+    events = []
     for ev in events_fetched:
         event = MyEvent(ev)
         events_map[event.id] = event
+        events.append(event)
+        print('Event', event, 'added to event map!')
 
     print('Fetching tasks...')
     tasks = fetch_tasks(meetings_project_id)  # fetching tasks in project and with our technical label
@@ -181,7 +182,8 @@ def fetch_and_save_events():
             print('Found event task ', task)
             tasks_map[get_caldav_id_from(task)] = task
 
-    for event in events_map.values():
+    print(len(events), 'events to be processed')
+    for event in events:
         print('Processing event: ', event)
         create_or_update_task_from_event(event, tasks_map)
 
@@ -191,6 +193,9 @@ def fetch_and_save_events():
 
     create_or_update_last_saved_mark(monitoring_task)  # for monitoring of tool activity
 
-
+fetch_and_save_events()
 schedule.every(25).minutes.do(fetch_and_save_events)
 
+while 1:
+    schedule.run_pending()
+    time.sleep(1)

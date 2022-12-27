@@ -3,14 +3,11 @@
 <plist version="1.0">
 <dict>
     <key>Label</key>
-    <string>caldav.todoist.sync</string>
+    <string>ru.belkinmike.caldav-todoist.sync</string>
     <key>ProgramArguments</key>
     <array>
-        <string>/path/to/python</string>
-        <string>~./scripts/caldav_todoist_sync/caldav_to_todoist.py</string>
+        <string>~/.scripts/caldav-todoist/run_script.sh</string>
     </array>
-    <key>StandardErrorPath</key>
-    <string>/var/log/caldav_todoist_sync.error</string>
     <key>KeepAlive</key>
     <true/>
 </dict>
