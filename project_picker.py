@@ -1,6 +1,6 @@
 from todoist_api_python.api import TodoistAPI
 
-todoist_token = "a674f071ea7caefe9d8b1669f68d55499fcee13b"
+todoist_token =
 todoist = TodoistAPI(todoist_token)
 
 
