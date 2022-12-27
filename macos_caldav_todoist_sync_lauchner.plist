@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>caldav.todoist.sync</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/path/to/python</string>
+        <string>~./scripts/caldav_todoist_sync/caldav_to_todoist.py</string>
+    </array>
+    <key>StandardErrorPath</key>
+    <string>/var/log/caldav_todoist_sync.error</string>
+    <key>KeepAlive</key>
+    <true/>
+</dict>
+</plist>
