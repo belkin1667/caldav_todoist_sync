@@ -1,8 +1,12 @@
 from datetime import datetime, timedelta, timezone
 
 import caldav
+import time
+
 from todoist_api_python.api import TodoistAPI
 from todoist_api_python.models import Task as TodoistTask
+
+from pinger import ping
 
 from credentials import *
 
@@ -143,7 +147,34 @@ def get_caldav_id_from(task: TodoistTask):
         raise Exception('Could not find CalDAV id of task', task)
 
 
+def fetch_and_save_events_with_retry(attempt=0):
+    if attempt > 0:
+        print('Sleeping for a while...')
+        time.sleep(20)
+    print('Trying', attempt + 1, 'time to fetch and save events')
+    if attempt > 10:
+        print('Quiting with noop')
+        return
+    try:
+        print('Trying..')
+        if fetch_and_save_events():
+            print('Successful!')
+            return
+        else:
+            print('Retrying!')
+            fetch_and_save_events_with_retry(attempt + 1)
+            return
+    except Exception as e:
+        print('Exception occurred!')
+        print(e)
+        fetch_and_save_events_with_retry(attempt + 1)
+
+
 def fetch_and_save_events():
+    if not ping(calendar_host):
+        print('Failed to ping host')
+        return False
+
     my_principal = caldavapi.principal()
     calendars = my_principal.calendars()
 
@@ -195,3 +226,4 @@ def fetch_and_save_events():
     print('Deleted!')
 
     create_or_update_last_saved_mark(monitoring_task)  # for monitoring of tool activity
+    return True
